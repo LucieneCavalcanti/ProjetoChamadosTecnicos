@@ -25,6 +25,5 @@ public class StatusEntity {
         this.descricao = descricao;
     }
     
-    //setters/getters
 
 }

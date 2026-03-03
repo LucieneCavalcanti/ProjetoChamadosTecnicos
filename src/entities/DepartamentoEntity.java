@@ -25,6 +25,5 @@ public class DepartamentoEntity {
         this.descricao = descricao;
     }
     
-    //setters/getters
 
 }
