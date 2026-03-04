@@ -11,7 +11,7 @@ public class UsuarioEntity {
         nome = new String();
         email = new String();
         senha = new String();
-        status = new StatusEntity();
+        status = new StatusEntity(); //não é mais null
     }
     public UsuarioEntity(int id, String nome, String email, String senha, StatusEntity status) {
         this.id = id;

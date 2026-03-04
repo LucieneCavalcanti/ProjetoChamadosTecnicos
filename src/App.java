@@ -1,9 +1,15 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import entities.AdministradorEntity;
+import entities.StatusEntity;
 
 public class App {
     public static void main(String[] args) throws Exception {
         String menu1=new String(),menu2=new String();
         Scanner ler = new Scanner(System.in);
+        ArrayList<AdministradorEntity> listaAdministradores = new ArrayList<>();
+        ArrayList<StatusEntity> listaStatus = new ArrayList<>();
         do {
             try {
                 //exibir o menu 1
@@ -44,10 +50,54 @@ public class App {
                     String opcao = menu1.trim()+menu2.trim();
                     switch (opcao) {
                         case "11":
+                            if(listaStatus.size()==0) {
+                                System.out.println("Nenhum status cadastrado! Cadastre um status antes de cadastrar um administrador.");
+                                break;
+                            }
                             System.out.println("Cadastrando Administrador...");
+                            AdministradorEntity adm = new AdministradorEntity();
+                            do{
+                                System.out.println("Digite o nome do administrador:");
+                                adm.setNome(ler.next());
+                            }while(adm.getNome().trim().isEmpty());
+                            do{
+                                System.out.println("Digite o email do administrador:");
+                                adm.setEmail(ler.next());
+                            }while(adm.getEmail().trim().length()<5 || !adm.getEmail().contains("@") || !adm.getEmail().contains("."));
+                            do{
+                                System.out.println("Digite a senha do administrador:");
+                                adm.setSenha(ler.next());
+                            }while(adm.getSenha().trim().length()<6 || adm.getSenha().trim().length()>20);
+                            //adm.setStatus(new StatusEntity(1, "Ativo"));
+                            do{
+                                for (StatusEntity st : listaStatus) {
+                                    System.out.println(st.getId()+" - "+st.getDescricao());
+                                }
+                                System.out.println("Digite o id do status do administrador:");
+                                int idStatus = ler.nextInt();
+                                StatusEntity status = null;
+                                for (StatusEntity st : listaStatus) {//validação do id
+                                    if(st.getId() == idStatus) {
+                                        status = st;
+                                        break;
+                                    }
+                                }
+                                if(status == null) {
+                                    System.out.println("Status não encontrado!");
+                                    continue;
+                                }
+                                adm.setStatus(status);
+                            }while (adm.getStatus().getId()==0);
+                            listaAdministradores.add(adm);//insert
+                            System.out.println("Administrador cadastrado com sucesso!");
                             break;
                         case "12":
                             System.out.println("Listando Administradores...");
+                            for (AdministradorEntity admin : listaAdministradores) {
+                                System.out.println(admin.getId()+" - "
+                                +admin.getNome()+" - "+admin.getEmail()
+                                +" - "+admin.getStatus().getDescricao());
+                            }
                             break;
                         case "13":
                             System.out.println("Atualizando Administrador...");
@@ -93,6 +143,18 @@ public class App {
                             break;
                         case "51":
                             System.out.println("Cadastrando Status...");
+                            StatusEntity status = new StatusEntity();
+                            do {
+                                System.out.print("ID do Status: ");
+                                status.setId(ler.nextInt());
+                                ler.nextLine();
+                            }while(status.getId()<=0);
+                             do {
+                                System.out.print("Descrição do Status: ");
+                                status.setDescricao(ler.nextLine());                         
+                            } while (status.getDescricao().trim().isEmpty());
+                            listaStatus.add(status);
+                            System.out.println("Status cadastrado com sucesso!");
                             break;
                         case "52":
                             System.out.println("Listando Status...");
