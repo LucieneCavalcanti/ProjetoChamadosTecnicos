@@ -1,4 +1,4 @@
-package repository;
+package repositories;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +11,25 @@ public class StatusRepository extends Conexao {
         super();
     }
     public boolean inserir(StatusEntity status) throws Exception {
-        String sql = "INSERT INTO tbstatus (descricao)  VALUES (?)";
+        String sql = "INSERT INTO tbstatus (descricao) VALUES (?)";
         PreparedStatement stmt = getConexao().
         prepareStatement(sql);
         stmt.setString(1, status.getDescricao());
+        return stmt.executeUpdate() > 0;
+    }
+    public boolean excluir(int id) throws Exception {
+        String sql = "DELETE FROM tbstatus WHERE id = ?";
+        PreparedStatement stmt = getConexao().
+        prepareStatement(sql);
+        stmt.setInt(1, id);
+        return stmt.executeUpdate() > 0;
+    }
+    public boolean editar(StatusEntity status) throws Exception {
+        String sql = "UPDATE tbstatus SET descricao = ? WHERE id = ?";
+        PreparedStatement stmt = getConexao().
+        prepareStatement(sql);
+        stmt.setString(1, status.getDescricao());
+        stmt.setInt(2, status.getId());
         return stmt.executeUpdate() > 0;
     }
     public ArrayList<StatusEntity> listar() throws Exception {
